@@ -1,0 +1,13 @@
+.info-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.info-card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.card-body {
+    cursor: pointer; /* Show pointer cursor for clickable content */
+}

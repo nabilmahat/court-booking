@@ -1,0 +1,14 @@
+.color-container {
+    display: flex;
+    align-items: center;
+}
+.form-select {
+    margin-right: 10px;
+}
+.color-indicator {
+    width: 36px;
+    height: 30px;
+    border-radius: 50%;
+    border: 0.5px solid #000;
+    background-color: #FFFFFF; /* Default color */
+}
