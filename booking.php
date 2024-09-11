@@ -12,7 +12,7 @@
   }
 
   // Prepare the first query to check if a booking exists
-  $query1 = "SELECT * FROM court_booking.bookings WHERE booking_date = ? AND booking_slot = ?";
+  $query1 = "SELECT * FROM bookings WHERE booking_date = ? AND booking_slot = ?";
   $stmt1 = $conn->prepare($query1);
   $stmt1->bind_param('si', $paramDate, $paramSlot);
   $stmt1->execute();
