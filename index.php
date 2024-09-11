@@ -154,13 +154,23 @@
         ?>
         <!-- Card Content -->
         <div class="d-flex justify-content-center">
-          <div class="card info-card revenue-card" onclick="goTo(<?php echo $index; ?>)">
+          <div id="cardInfo-<?php echo $index; ?>" class="card info-card revenue-card" onclick="goTo(<?php echo $index; ?>)">
             <div class="card-body text-center">
-              <hr style="border: 2px solid green;">
+              <hr id="hr-<?php echo $index; ?>" style="border: 2px solid green;">
               <div>
                 <h4 id="card-date-<?php echo $index; ?>"></h4>
                 <h6 id="card-slot-<?php echo $index; ?>"><?php echo $slot; ?></h6>
-                <b class="text-muted small">!? BOOK NOW !?</b>
+                <b class="text-muted small">
+                <div style="display: flex; align-items: center; justify-content: center">
+                  <div id="colorIndicator-<?php echo $index; ?>-1" class="color-indicator-slot" style="display: none"></div>&nbsp;
+                  <span id="card-team-<?php echo $index; ?>-1">!?</span><br> 
+                </div>
+                  VS <br>
+                <div style="display: flex; align-items: center; justify-content: center">
+                  <div id="colorIndicator-<?php echo $index; ?>-2" class="color-indicator-slot" style="display: none"></div>&nbsp;
+                  <span id="card-team-<?php echo $index; ?>-2">!?</span><br>
+                </div>
+                </b>
               </div>
             </div>
           </div>

@@ -8,7 +8,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$date = $_POST['date'];
+// Get the date from the GET request
+$date = $_GET['date'];
 if (!DateTime::createFromFormat('Y-m-d', $date)) {
     echo json_encode(['error' => 'Invalid date format']);
     exit;
@@ -16,31 +17,35 @@ if (!DateTime::createFromFormat('Y-m-d', $date)) {
 
 // Prepare the SQL query to fetch bookings for the specified date
 $query = "
-    SELECT t.name AS team_name, b.slot 
-    FROM bookings b
-    JOIN booking_teams bt ON b.id = bt.booking_id
-    JOIN teams t ON bt.team_id = t.id
-    WHERE b.booking_date = ?
-    ORDER BY b.slot ASC
-";
+    SELECT 
+        b.booking_date, b.booking_slot, b.id AS bookingId, bt.team_id, bt.team_order, t.id AS teamID, t.team_name, booking_name, booking_contact_number, jersey_color, team_age
+    FROM 
+        bookings b
+    INNER JOIN 
+        booking_teams bt
+    ON
+        b.id = bt.booking_id
+    INNER JOIN 
+        teams t
+    ON
+        t.id = bt.team_id
+    WHERE
+        booking_date = '$date'
+    ";
 
-// Prepare the statement
-$stmt = $conn->prepare($query);
-if (!$stmt) {
-    echo json_encode(['error' => 'Failed to prepare statement']);
+// Execute the query
+$result = $conn->query($query);
+
+// Check for query execution errors
+if (!$result) {
+    echo json_encode(['error' => 'Query failed']);
     exit;
 }
 
-// Bind the parameter and execute the statement
-$stmt->bind_param('s', $date);
-$stmt->execute();
-
-// Get the results
-$result = $stmt->get_result();
+// Fetch all results
 $bookings = $result->fetch_all(MYSQLI_ASSOC);
 
-// Close connections
-$stmt->close();
+// Close connection
 $conn->close();
 
 // Send JSON response back to the frontend

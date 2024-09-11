@@ -11,6 +11,8 @@ $(document).ready(function() {
     
             data.bookings.forEach(event => {
                 const date = event.booking_date;
+                const totalBookings = Number(event.total_bookings); // Convert total_bookings to a number
+                console.log("totalBookings: ", totalBookings);
     
                 // Check if the event date is in the past
                 const eventDate = new Date(date);
@@ -23,16 +25,16 @@ $(document).ready(function() {
                         id: date, // Use date as a unique ID
                         title: '', // Default to empty string if title is not provided
                         start: date,
-                        totalBookings: event.total_bookings,
-                        backgroundColor: eventDate < today ? 'grey' : event.total_bookings < 1 ? 'green' :
-                                          event.total_bookings > 0 && event.total_bookings < 11 ? 'orange' : 'red',
+                        totalBookings: totalBookings, // Store as a number
+                        backgroundColor: eventDate < today ? 'grey' : totalBookings < 1 ? 'green' :
+                                          totalBookings > 0 && totalBookings < 22 ? 'orange' : 'red',
                         allDay: true,
                         editable: false
                     };
                 } else {
-                    aggregatedEvents[date].totalBookings += event.total_bookings;
+                    aggregatedEvents[date].totalBookings = totalBookings; // Add as a number
                     aggregatedEvents[date].backgroundColor = eventDate < today ? 'grey' : aggregatedEvents[date].totalBookings < 1 ? 'green' :
-                                          aggregatedEvents[date].totalBookings > 0 && aggregatedEvents[date].totalBookings < 11 ? 'orange' : 'red';
+                                              aggregatedEvents[date].totalBookings > 0 && aggregatedEvents[date].totalBookings < 11 ? 'orange' : 'red';
                 }
             });
     
@@ -46,10 +48,10 @@ $(document).ready(function() {
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Error fetching events:', textStatus, errorThrown);
         });
-    }    
+    }
 
     function initializeCalendar() {
-        fetchBookingsForDate(formatDate(getCurrentDate()));
+        updateCardDate(formatDate(getCurrentDate()));
         calendar = new FullCalendar.Calendar(calendarEl, {
             header: { // layout header
                 left: 'title', 
@@ -91,18 +93,15 @@ $(document).ready(function() {
                     calendar.unselect();
                     return;
                 }
-            
-                var selectedDate = formatDate(info.dateStr);
-                // updateCardDate(selectedDate);
-                fetchBookingsForDate(info.dateStr);
+                updateCardDate(formatDate(info.dateStr));
             },            
 
             datesRender: function (info) {
                 const start = info.view.currentStart;
                 const end = info.view.currentEnd;
 
-                console.log('Start of the current month:', formatDate(start));
-                console.log('End of the current month:', formatDate(end));
+                // console.log('Start of the current month:', formatDate(start));
+                // console.log('End of the current month:', formatDate(end));
             },
             showNonCurrentDates: false,
         });
@@ -116,25 +115,74 @@ $(document).ready(function() {
         return date.toLocaleDateString('en-US', options);
     }
 
-    function fetchBookingsForDate(date) {
+    function updateCardDate(date) {
+        // Format the date to be compatible with your PHP script
+        var formattedDate = new Date(date);
+        var year = formattedDate.getFullYear();
+        var month = String(formattedDate.getMonth() + 1).padStart(2, '0');
+        var day = String(formattedDate.getDate()).padStart(2, '0');
+        
+        var startDate = `${year}-${month}-${day}`;
+    
+        // Perform an AJAX request to fetch bookings data
         $.ajax({
             url: 'query/slots.php',
-            type: 'POST',
-            data: { date: date },
+            method: 'GET',
+            data: {
+                date: startDate
+            },
+            dataType: 'json',
             success: function(response) {
-                var bookings = JSON.parse(response);
-                updateRevenueCards(bookings, date);
+                if (response.error) {
+                    console.error(response.error);
+                    return;
+                }
+    
+                // Reset the UI for all slots
+                for (var a = 0; a < 11; a++) {
+                    var element = document.getElementById('card-date-' + a);
+                    if (element) {
+                        element.innerText = `${date}`;
+                    }
+
+                    document.getElementById('card-team-' + a + '-1').textContent = "!?";
+                    document.getElementById('colorIndicator-' + a + '-1').style.display = 'none';
+                    document.getElementById('card-team-' + a + '-2').textContent = "!?";
+                    document.getElementById('colorIndicator-' + a + '-2').style.display = 'none';
+                    document.getElementById('hr-' + a).style.border = '2px solid green';
+                }
+    
+                // Map response data to the correct slots and teams
+                response.forEach(function(booking) {
+                    var slot = booking.booking_slot;
+                    var order = booking.team_order;
+                    
+                    // Update the team and color for the correct slot and order
+                    document.getElementById('card-team-' + slot + '-' + order).textContent = booking.team_name + " (" + booking.team_age + ")";
+                    document.getElementById('colorIndicator-' + slot + '-' + order).style.display = 'block';
+                    document.getElementById('colorIndicator-' + slot + '-' + order).style.backgroundColor = booking.jersey_color;
+    
+                    // Change the border color based on the team order
+                    if (order == 1) {
+                        document.getElementById('hr-' + slot).style.border = '2px solid orange';
+                    } else if (order == 2) {
+                        document.getElementById('hr-' + slot).style.border = '2px solid red';
+
+                        // Select the element by its id
+                        var cardElement = document.getElementById('cardInfo-'+slot); // Replace '1' with the appropriate index or variable
+                        // Remove the onclick function
+                        if (cardElement) {
+                            cardElement.onclick = null;
+                        }
+                    }
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching bookings:', textStatus, errorThrown);
             }
         });
     }
-
-    function updateRevenueCards(bookings, date) {
-        for (var i = 0; i < 11; i++) {
-            var bookingInfo = bookings[i] ? bookings[i].team_name : '!? BOOK NOW !?';
-            document.getElementById('card-date-' + i).innerText = date;
-            document.getElementById('booking-info-' + i).innerText = bookingInfo;
-        }
-    }
+    
 
     function getCurrentDate() {
         const today = new Date();

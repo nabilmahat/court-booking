@@ -12,3 +12,10 @@
     border: 0.5px solid #000;
     background-color: #FFFFFF; /* Default color */
 }
+.color-indicator-slot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 0.5px solid #000;
+    background-color: #FFFFFF; /* Default color */
+}

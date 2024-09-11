@@ -18,6 +18,8 @@
         $slot = sanitize_input($_POST['slot']);
         $date = sanitize_input($_POST['date']);
 
+        $bookPrice = $timeSlots[$slot]['price'];
+
         $teamName = sanitize_input($_POST['teamName']);
         $yourName = sanitize_input($_POST['yourName']);
         $contactNumber = sanitize_input($_POST['contactNumber']);
@@ -54,6 +56,7 @@
         // echo "<p><strong>Jersey Color:</strong> $jerseyColor1</p>";
 
         // if ($opponent === 'have_opponent') {
+        //     $bookPrice = $bookPrice*2;
         //     echo "<h2>Opponent Details</h2>";
         //     echo "<p><strong>Opponent Team Name:</strong> $teamOpponentName</p>";
         //     echo "<p><strong>Opponent Contact Number:</strong> $teamOpponentContactNumber</p>";
@@ -95,6 +98,23 @@
 
               <!-- Start Form Elements -->
               <form action="forms/bookingForm.php" method="post">
+
+              <!-- Hidden Data -->
+              <input type="hidden" name="slot" value="<?php echo htmlspecialchars($slot); ?>">
+              <input type="hidden" name="date" value="<?php echo htmlspecialchars($date); ?>">
+              <input type="hidden" name="teamName" value="<?php echo htmlspecialchars($teamName); ?>">
+              <input type="hidden" name="yourName" value="<?php echo htmlspecialchars($yourName); ?>">
+              <input type="hidden" name="contactNumber" value="<?php echo htmlspecialchars($contactNumber); ?>">
+              <input type="hidden" name="teamCategory" value="<?php echo htmlspecialchars($teamCategory); ?>">
+              <input type="hidden" name="jerseyColor1" value="<?php echo htmlspecialchars($jerseyColor1); ?>">
+              <input type="hidden" name="opponent" value="<?php echo htmlspecialchars($opponent); ?>">
+              <?php if ($opponent === 'have_opponent'): ?>
+                  <input type="hidden" name="teamOpponentName" value="<?php echo htmlspecialchars($teamOpponentName); ?>">
+                  <input type="hidden" name="teamOpponentContactNumber" value="<?php echo htmlspecialchars($teamOpponentContactNumber); ?>">
+                  <input type="hidden" name="jerseyColor2" value="<?php echo htmlspecialchars($jerseyColor2); ?>">
+              <?php endif; ?>
+              <input type="hidden" name="bookPrice" value="<?php echo htmlspecialchars($bookPrice); ?>">
+              <!-- Hidden Data -->
               
               <!-- hidden data -->
               <input type="hidden" name="slot" value="<?php echo htmlspecialchars($slot); ?>">
@@ -106,23 +126,23 @@
                   <div class="col-sm-10">
                     <label class="col-sm-2 col-form-label">Field amount / team</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="RM <?php echo $timeSlots[$slot]['price']; ?>" disabled>
+                        <input type="text" class="form-control" value="RM <?php echo $bookPrice; ?>" readonly>
                     </div>
                     <label class="col-sm-2 col-form-label">Can pay full amount or deposit</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="RM 100" disabled>
+                        <input type="text" class="form-control" value="RM 100" readonly>
                     </div>
                     <label class="col-sm-2 col-form-label">Bill ID</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="REF-<?php echo date('Ymd').'-'.$randomString; ?>" disabled>
+                        <input type="text" class="form-control" name="billId" value="REF-<?php echo htmlspecialchars(date('Ymd').'-'.$randomString); ?>" readonly>
                     </div>
                     <label class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $yourName; ?>" disabled>
+                        <input type="text" class="form-control" value="<?php echo $yourName; ?>" readonly>
                     </div>
                     <label class="col-sm-2 col-form-label">Contact Number</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $contactNumber; ?>" disabled>
+                        <input type="text" class="form-control" value="<?php echo $contactNumber; ?>" readonly>
                     </div>
                   </div>
                 </div>
