@@ -47,6 +47,12 @@ h6 {
   margin-bottom: 40px;
 }
 
+#main-admin {
+  margin-top: 60px;
+  padding: 20px 30px;
+  transition: all 0.3s;
+}
+
 @media (max-width: 1199px) {
   #main {
     padding: 20px;
@@ -644,6 +650,14 @@ h6 {
 
   .toggle-sidebar .sidebar {
     left: -300px;
+  }
+}
+
+@media (min-width: 1200px) {
+
+  #main-admin,
+  #footer-admin {
+    margin-left: 300px;
   }
 }
 

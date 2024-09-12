@@ -153,14 +153,18 @@
                 }
 
                 // Insert into booking_teams table for opponent
-                $sqlOpponentBookingTeam = "INSERT INTO booking_teams (booking_id, team_id, team_order, bill_id) VALUES (?, ?, 2, ?)";
+                $teamOrder2 = 2;
+                $sqlOpponentBookingTeam = "INSERT INTO booking_teams (booking_id, team_id, team_order, bill_id) VALUES (?, ?, ?, ?)";
                 if ($stmtOpponentBookingTeam = $conn->prepare($sqlOpponentBookingTeam)) {
-                    $stmtOpponentBookingTeam->bind_param('iiis', $bookingId, $opponentTeamId, $billId);
+                    // Bind the parameters
+                    $stmtOpponentBookingTeam->bind_param('iiis', $bookingId, $opponentTeamId, $teamOrder2, $billId);
+                    // Execute the statement
                     if ($stmtOpponentBookingTeam->execute()) {
                         // Success
                     } else {
                         throw new Exception("Error: " . $stmtOpponentBookingTeam->error);
                     }
+                    // Close the statement
                     $stmtOpponentBookingTeam->close();
                 } else {
                     throw new Exception("Error preparing the statement: " . $conn->error);
@@ -170,8 +174,22 @@
             // Commit the transaction
             $conn->commit();
             echo "Booking and team information has been successfully saved.";
+
+            // send email to admin
+            $to = "mnabilmahat@gmail.com";
+            $subject = "Subject of the email";
+            $message = "Hello, this is a test email sent using PHP's mail() function.";
+            $headers = "From: sender@example.com\r\n";
+
+            
+            if(mail($to, $subject, $message, $headers)) {
+                echo "Email sent successfully!";
+            } else {
+                echo "Failed to send email.";
+            }
+
             // Redirect to index.php
-            header("Location: ../index.php");
+            header("Location: ../success.php?refid=".$billId);
             exit();
         } catch (Exception $e) {
             // Rollback the transaction in case of an error

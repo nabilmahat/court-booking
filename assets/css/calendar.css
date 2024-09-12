@@ -127,4 +127,12 @@ body {
     #calendar {
         margin-bottom: 185px;
     }
+
+    .error-404 h1 {
+        font-size: 90px;
+        font-weight: 700;
+        color: #4154f1;
+        margin-bottom: 0;
+        line-height: 150px;
+    }
 }
