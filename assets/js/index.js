@@ -25,21 +25,16 @@ function goTo(index) {
       }
     }
 
-    noOpponentRadio.addEventListener('change', toggleOpponentDetails);
-    haveOpponentRadio.addEventListener('change', toggleOpponentDetails);
-
-    // Initial check
-    toggleOpponentDetails();
-
     // show color indicator 1
     const selectElement1 = document.getElementById('colorSelect1');
     const colorIndicator1 = document.getElementById('colorIndicator1');
 
     selectElement1.addEventListener('change', (event) => {
+      console.log(event.target.value);
         colorIndicator1.style.backgroundColor = event.target.value;
     });
 
-    // Set initial color
+    // Set initial color 1
     colorIndicator1.style.backgroundColor = selectElement1.value;
 
     // show color indicator 2
@@ -50,6 +45,12 @@ function goTo(index) {
         colorIndicator2.style.backgroundColor = event.target.value;
     });
 
-    // Set initial color
+    // Set initial color 2
     colorIndicator2.style.backgroundColor = selectElement2.value;
+
+    noOpponentRadio.addEventListener('change', toggleOpponentDetails);
+    haveOpponentRadio.addEventListener('change', toggleOpponentDetails);
+
+    // Initial check
+    toggleOpponentDetails();
   });

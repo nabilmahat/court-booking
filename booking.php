@@ -227,7 +227,7 @@
                   <label class="col-sm-2 col-form-label">JERSEY COLOR</label>
                   <div class="col-sm-2">
                     <div class="color-container">
-                      <div id="colorIndicator2" class="color-indicator" style="width: 18px; height: 18px; border-radius: 50%; border: 0.5px solid #000; background-color: <?php echo $data["teams"][0]["jersey_color"]; ?>;"></div>
+                      <div id="colorIndicator2" class="color-indicator" style="width: 30px; background-color: <?php echo $data["teams"][0]["jersey_color"]; ?>;"></div>
                     </div>
                   </div>
                 </div>
