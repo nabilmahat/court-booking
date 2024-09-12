@@ -1,7 +1,7 @@
 
 
   <!-- Sticky Bottom Navbar -->
-  <nav class="navbar navbar-dark bg-dark navbar-expand fixed-bottom">
+  <!-- <nav class="navbar navbar-dark bg-dark navbar-expand fixed-bottom">
     <div class="container justify-content-center">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -24,7 +24,7 @@
             </li>
         </ul>
     </div>
-  </nav>
+  </nav> -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -41,7 +41,7 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
-  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Start Index Script -->
 <script src="assets/js/index.js"></script>
@@ -49,9 +49,10 @@
 
   <!-- Start Calendar Script -->
   <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.2.0/main.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.2.0/main.js'></script>
-  <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.2.0/main.js'></script>
+  <!-- <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.2.0/main.min.js'></script> -->
+  <!-- <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.2.0/main.js'></script> -->
+  <!-- <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.2.0/main.js'></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
   <script src='https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js'></script>
 

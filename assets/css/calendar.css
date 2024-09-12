@@ -7,7 +7,7 @@ body {
 
 #calendar {
     max-width: 800px;
-    margin: 40px auto;
+    /* margin: 40px auto; */
     background: #fff;
     padding: 15px;
 
@@ -111,8 +111,20 @@ body {
 
 /* custom css */
 @media only screen and (max-width: 768px) { /* Adjust the max-width as needed for your breakpoint */
+
+    /* calendar-v4.js */
     .fc-scroller.fc-day-grid-container {
         overflow: auto !important;
         height: 384px !important;
+    }
+
+    /* calendar.js [current] */
+    .fc-scrollgrid {
+        height: 427px !important;
+        margin-bottom: 20px;
+    }
+
+    #calendar {
+        margin-bottom: 185px;
     }
 }
