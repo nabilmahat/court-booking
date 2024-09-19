@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-12">
                                 <label for="inputBookingSlot" class="form-label">Booking Slot</label>
-                                <input type="text" class="form-control" id="inputBookingSlot" value="<?php echo $bookingSlot; ?>" readonly>
+                                <input type="text" class="form-control" id="inputBookingSlot" value="<?php echo $timeSlots[$bookingSlot]["time"]; ?>" readonly>
                             </div>
 
                             <!-- Team Details -->
