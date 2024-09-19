@@ -11,9 +11,11 @@
         <h2>Thank you for booking</h2>
         <h2>Booking Refferal ID: <?php echo $refId; ?></h2>
         <p>Instructions: </p>
-        <p>1. Transfer payment to (use Booking Refferal ID) BANK ACCOUNT -> 8605117580 [CIMB BANK - RAFA SPORT SDN BHD]</p>
-        <p>2. SCREENSHOT YOUR RECEIPT AND CLICK HERE TO SHARE DIRECTLY TO RAFA WHATSAPP NUMBER 01123239902(KHALID)</p>
-        <a class="btn" href="index.php">Continue</a>
+        <p>1. Transfer payment to (use Booking Refferal ID) BANK ACCOUNT -> <b> 5643 9714 0979 [MAYBANK - MD STRATEGIC]</b></p>
+        <p>2. Screenshot Your Receipt And Click Here To Share Directly To RAFA Whatsapp Number 017-8858327(MAN) / 011-3776 7483</p>
+        <a class="btn" href="https://dragoarena.wasap.click/" target="_blank">Whatsapps for Confirm Booking</a>
+        <br>
+        <a class="btn" href="index.php">Home</a>
       </section>
 
     </div>

@@ -25,7 +25,8 @@
             INNER JOIN 
                 teams t ON t.id = bt.team_id
             GROUP BY 
-                b.id, b.booking_date, b.booking_slot, bt.bill_id, bt.created_at;";
+                b.id, b.booking_date, b.booking_slot, bt.bill_id, bt.created_at
+            ORDER BY bt.created_at DESC;";
 
     // Execute the query
     $result = $conn->query($sql);

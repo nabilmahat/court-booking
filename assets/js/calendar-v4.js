@@ -146,9 +146,9 @@ $(document).ready(function() {
                         element.innerText = `${date}`;
                     }
 
-                    document.getElementById('card-team-' + a + '-1').textContent = "!?";
+                    document.getElementById('card-team-' + a + '-1').textContent = "Available";
                     document.getElementById('colorIndicator-' + a + '-1').style.display = 'none';
-                    document.getElementById('card-team-' + a + '-2').textContent = "!?";
+                    document.getElementById('card-team-' + a + '-2').textContent = "Available";
                     document.getElementById('colorIndicator-' + a + '-2').style.display = 'none';
                     document.getElementById('hr-' + a).style.border = '2px solid green';
                 }

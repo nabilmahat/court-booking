@@ -1,4 +1,15 @@
 <?php
+
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+
+    require '../modules/PHPMailer/src/Exception.php';
+    require '../modules/PHPMailer/src/PHPMailer.php';
+    require '../modules/PHPMailer/src/SMTP.php';
+
+    // Create a new PHPMailer instance
+    $mail = new PHPMailer(true);
+
     include "../connection/connection.php";
     include "../constants/timeslot.php";
 
@@ -175,17 +186,139 @@
             $conn->commit();
             echo "Booking and team information has been successfully saved.";
 
-            // send email to admin
-            $to = "mnabilmahat@gmail.com";
-            $subject = "Subject of the email";
-            $message = "Hello, this is a test email sent using PHP's mail() function.";
-            $headers = "From: sender@example.com\r\n";
+            function getTimeSlot($slot, $timeSlots) {
+                if (isset($timeSlots[$slot])) {
+                    return $timeSlots[$slot];
+                }
+                return null;
+            }
 
+            // Get the time slot details
+            $timeSlotDetails = getTimeSlot($slot, $timeSlots);
+            $timeRange = $timeSlotDetails['time'] ?? 'N/A';
+            $slotPrice = $timeSlotDetails['price'] ?? 'N/A';
+
+            $teamCategoryName = $teamCategory == "vet" 
+                ? "Veteran" 
+                : ($teamCategory == "semi_vet" 
+                    ? "Semi Veteran" 
+                    : "Open");
+
+            $mailFrom = "booking@dragoarena.com";
+            $mailFromPassword = "80ok!ng_123";
+            $mailTo = "nabilm.work@gmail.com"; // dragoarenasports@gmail.com
+
+            // send email to admin
+            try {
+                // Server settings
+                $mail->isSMTP();                                            // Set mailer to use SMTP
+                $mail->Host       = 'mail.dragoarena.com';                  // Specify SMTP server
+                $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+                $mail->Username   = $mailFrom;            // SMTP username (your email)
+                $mail->Password   = $mailFromPassword;                  // SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            // Enable SSL encryption
+                $mail->Port       = 465;                                    // TCP port to connect to (for SSL)
             
-            if(mail($to, $subject, $message, $headers)) {
-                echo "Email sent successfully!";
-            } else {
-                echo "Failed to send email.";
+                // Recipients
+                $mail->setFrom($mailFrom, 'Drago Arena Booking System');   // Sender
+                $mail->addAddress($mailTo, $yourName); // Add recipient
+            
+                // Content
+                $mail->isHTML(true);                                        // Set email format to HTML
+                $mail->Subject = 'New Court Booking';
+
+                // Build the email body with an HTML table
+                $mail->Body    = '
+                <html>
+                <head>
+                    <style>
+                        table {
+                            font-family: Arial, sans-serif;
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+                        th, td {
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>New Court Booking Details</h2>
+                    <table>
+                        <tr>
+                            <th>Date</th>
+                            <td>' . $date . '</td>
+                        </tr>
+                        <tr>
+                            <th>Time Slot</th>
+                            <td>' . $timeRange . '</td>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <td>RM ' . $slotPrice . '</td>
+                        </tr>
+                        <tr>
+                            <th>Team Name</th>
+                            <td>' . $teamName . '</td>
+                        </tr>
+                        <tr>
+                            <th>Your Name</th>
+                            <td>' . $yourName . '</td>
+                        </tr>
+                        <tr>
+                            <th>Contact Number</th>
+                            <td>' . $contactNumber . '</td>
+                        </tr>
+                        <tr>
+                            <th>Team Category</th>
+                            <td>' . $teamCategoryName . '</td>
+                        </tr>
+                        <tr>
+                            <th>Jersey Color</th>
+                            <td>
+                                <div style="width: 50px; height: 50px; background-color: ' . $jerseyColor1 . '; border: 1px solid black;"></div>
+                            </td>
+                        </tr>';
+
+                // If there is an opponent, add opponent details
+                if ($opponent === 'have_opponent') {
+                    $mail->Body .= '
+                        <tr>
+                            <th>Opponent Team Name</th>
+                            <td>' . $teamOpponentName . '</td>
+                        </tr>
+                        <tr>
+                            <th>Opponent Contact Number</th>
+                            <td>' . $teamOpponentContactNumber . '</td>
+                        </tr>
+                        <tr>
+                            <th>Opponent Jersey Color</th>
+                            <td>
+                                <div style="width: 50px; height: 50px; background-color: ' . $jerseyColor2 . '; border: 1px solid black;"></div>
+                            </td>
+                        </tr>';
+                }
+
+                // Close the table
+                $mail->Body .= '
+                    </table>
+                    <br>
+                    <a href="https://dragoarena.com/booking/detail.php?booking_id=' . $bookingId . '">View Booking Details</a>
+                </body>
+                </html>';
+
+                $mail->AltBody = 'Court Booked for ' . $date . ' at ' . $timeRange;
+
+                // Send email
+                $mail->send();
+                echo 'Message has been sent';
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
 
             // Redirect to index.php

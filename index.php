@@ -14,6 +14,12 @@
   <section class="section dashboard">
     <div class="row d-flex justify-content-center align-items-center">
 
+    <div class="col-lg-12">
+      <button class="btn">
+        <a href="status.php">Check Booking</a>
+      </button>
+    </div>
+
       <!-- Start Calendar -->
       <div id='calendar'></div>
         
@@ -105,12 +111,12 @@
                         <b class="text-muted small">
                             <div style="display: flex; align-items: center; justify-content: center">
                                 <div id="colorIndicator-<?php echo $index; ?>-1" class="color-indicator-slot" style="display: none"></div>&nbsp;
-                                <span id="card-team-<?php echo $index; ?>-1">!?</span><br>
+                                <span id="card-team-<?php echo $index; ?>-1">Available</span><br>
                             </div>
                             VS <br>
                             <div style="display: flex; align-items: center; justify-content: center">
                                 <div id="colorIndicator-<?php echo $index; ?>-2" class="color-indicator-slot" style="display: none"></div>&nbsp;
-                                <span id="card-team-<?php echo $index; ?>-2">!?</span><br>
+                                <span id="card-team-<?php echo $index; ?>-2">Available</span><br>
                             </div>
                         </b>
                     </div>
