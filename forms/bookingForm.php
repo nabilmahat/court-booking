@@ -206,7 +206,7 @@
 
             $mailFrom = "booking@dragoarena.com";
             $mailFromPassword = "80ok!ng_123";
-            $mailTo = "nabilm.work@gmail.com"; // dragoarenasports@gmail.com
+            $mailTo = "dragoarenasports@gmail.com";
 
             // send email to admin
             try {
