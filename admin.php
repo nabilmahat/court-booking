@@ -88,7 +88,10 @@
                                     echo '<td>' . htmlspecialchars($row['team1_names']) . '</td>';
                                     echo '<td>' . htmlspecialchars($row['team2_names']) . '</td>';
                                     echo '<td>' . htmlspecialchars($row['created_at']) . '</td>';
-                                    echo '<td><a href="detail.php?booking_id='.$row['booking_id'].'" class="btn btn-primary">Details</button></td>';
+                                    echo '<td>
+                                          <a href="detail.php?booking_id='.$row['booking_id'].'" class="btn btn-primary">Detail</a>
+                                          <a href="#" class="btn btn-danger deleteButton" data-booking-id="' . $row['booking_id'] . '">Delete</a>
+                                          </td>';
                                     echo '</tr>';
 
                                     $index++;
@@ -112,6 +115,87 @@
       </div>
     </section>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this booking?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="confirmDeleteButton" class="btn btn-danger">Confirm Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main><!-- End #main -->
 
   <?php include "components/footerAdmin.php"; ?>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Reference the modal and confirm delete button
+      const deleteModal = new bootstrap.Modal(document.getElementById("deleteConfirmationModal"));
+      const confirmDeleteButton = document.getElementById("confirmDeleteButton");
+
+      // Attach event listeners to all delete buttons
+      document.querySelectorAll(".deleteButton").forEach((button) => {
+        button.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent default behavior
+
+          // Get the booking_id from the clicked delete button
+          const bookingId = this.getAttribute("data-booking-id");
+
+          // Store booking_id in the confirm button's data attribute
+          confirmDeleteButton.setAttribute("data-booking-id", bookingId);
+
+          // Show the modal
+          deleteModal.show();
+        });
+      });
+
+      // Handle the delete action when confirm button is clicked
+      confirmDeleteButton.addEventListener("click", function () {
+        // Retrieve booking_id from the confirm button's data attribute
+        const bookingId = this.getAttribute("data-booking-id");
+
+        // Send the AJAX request to delete the booking
+        fetch(`query/deleteBooking.php`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `booking_id=${bookingId}`,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to delete booking");
+            }
+            return response.json(); // Assuming your server returns JSON
+          })
+          .then((data) => {
+            if (data.success) {
+              alert("Booking deleted successfully!");
+
+              // Remove the table row or the corresponding DOM element
+              document.querySelector(`[data-booking-id="${bookingId}"]`).closest("tr").remove();
+            } else {
+              alert(data.message || "An error occurred while deleting the booking.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while deleting the booking.");
+          });
+
+        // Close the modal
+        deleteModal.hide();
+      });
+    });
+  </script>

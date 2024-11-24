@@ -206,7 +206,12 @@
 
             $mailFrom = "booking@dragoarena.com";
             $mailFromPassword = "80ok!ng_123";
+            
             $mailTo = "dragoarenasports@gmail.com";
+            $name = 'Drago Arena';
+
+            $mailToOther = "marina_futuristic@yahoo.com";
+            $nameOther = "Marina";
 
             // send email to admin
             try {
@@ -221,7 +226,8 @@
             
                 // Recipients
                 $mail->setFrom($mailFrom, 'Drago Arena Booking System');   // Sender
-                $mail->addAddress($mailTo, $yourName); // Add recipient
+                $mail->addAddress($mailTo, $name); //$yourName); // Add recipient
+                $mail->addAddress($mailToOther, $nameOther); //$yourName); // Add recipient
             
                 // Content
                 $mail->isHTML(true);                                        // Set email format to HTML
